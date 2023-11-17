@@ -18,9 +18,15 @@ This repo contains code and instructions for performing the analyses from the pa
 
 ## Demo
 (This needs to have instructions to run on data, expected output, expected runtime for demo)
+MASKED STS DATA FITTING ENCODING MODEL ON THAT
 
 ## Instructions for Use
 (This needs to have instructions for running things on our data, reproduction instructions)
 
 ## Pseudocode/Description of Code's Functionality
+1. Feature extraction
+2. Fitting encoding models
+3. Comparing encoding models
+4. Writing out maps
+5. Inference on maps
 
