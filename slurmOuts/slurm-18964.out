@@ -1,0 +1,17 @@
+/var/lib/slurm-llnl/slurmd/job18964/slurm_script: line 8: ​: command not found
+environment: line 38: /usr/bin/tclsh8.6: No such file or directory
+License checkout failed.
+License Manager Error -10
+Your license for MATLAB has expired. 
+If you are not using a trial license contact your License Administrator to obtain an updated
+license. 
+Otherwise, contact your Sales Representative for a trial extension.
+
+Troubleshoot this issue by visiting: 
+https://www.mathworks.com/support/lme/R2022a/10
+
+Diagnostic Information:
+Feature: MATLAB 
+License path: /home/ksoderberg/.matlab/R2022a_licenses:/opt/MATLAB/R2022a/licenses/license.dat:/opt/MATLAB/R2022a/
+licenses/license_node1_300274_R2022a.lic 
+Licensing error: -10,32.

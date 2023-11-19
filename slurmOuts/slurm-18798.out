@@ -1,0 +1,23 @@
+/var/lib/slurm-llnl/slurmd/job18798/slurm_script: line 8: ​: command not found
+environment: line 38: /usr/bin/tclsh8.6: No such file or directory
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2022 The MathWorks, Inc.
+             R2022a Update 1 (9.12.0.1927505) 64-bit (glnxa64)
+                               April 6, 2022
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+    ----------------------------------------------------
+	Your license will expire in 3 days.
+	Please contact your system administrator or
+	MathWorks to renew this license.
+    ----------------------------------------------------
+{File:
+/home/data/eccolab/Code/NNDb/SEE/predict_STS_activity_multimodal_intermed_resub.m
+Line: 6 Column: 69
+Invalid expression. When calling a function or indexing a variable, use
+parentheses. Otherwise, check for mismatched delimiters.
+} 

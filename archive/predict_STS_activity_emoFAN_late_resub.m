@@ -1,13 +1,14 @@
 %This is a script to use IMAGE features extracted by a specified layer of NN (EmoNet) to predict amygdala activity from BOLD data acquired from NNDb
 %includes beta (b) extraction = regression coefficients from our encoding models; betas are the mapping between units in the convnet and BOLD response (pattern of beta coefficients that we used to predict amygdala responses with)
 
-addpath(genpath('~/GitHub'))
-load('500_days_of_summer_fc7_features.mat')
-t=readtable('/home/data/eccolab/Code/GitHub/emonet/emoFAN_NNDB_lastConv_total.txt');
-video_imageFeatures_FAN = table2array(t);
-
+addpath(genpath('/home/data/eccolab/Code/GitHub/CanlabCore'))
+addpath('/home/data/eccolab/Code/GitHub/spm12')
+addpath(genpath('/home/data/eccolab/Code/GitHub/Neuroimaging_Pattern_Masks'))
+addpath(genpath('/home/data/eccolab/Code/GitHub/emonet'))
+% load('500_days_of_summer_fc8_features.mat')
+t=readtable('/home/data/eccolab/Code/GitHub/emonet/emonet_face_output_NNDB_lastFC.txt');
+video_imageFeatures = table2array(t);
 lendelta = size(video_imageFeatures, 1);
-lendelta_FAN = size(video_imageFeatures_FAN,1);
 
 %an array to iterate all the subjects
 subjects = {'1' '2' '3' '4' '5' '6' '7' '8' '9' '10' '11' '12' '13' '14' '15' '16' '17' '18' '19' '20'};
@@ -19,16 +20,12 @@ for s = 1:length(subjects)
     dat = fmri_data(['/home/data/eccolab/OpenNeuro/ds002837/derivatives/sub-' subjects{s} '/func/sub-' subjects{s} '_task-500daysofsummer_bold_blur_censor.nii.gz']);
     
     %mask BOLD data to isolate amygdala voxels ONLY
-        masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('canlab2018'),{'STSvp','STSdp'}));
-
-%     masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('canlab2018'),{'Amy'}));
+    masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('canlab2018'),{'STSvp','STSdp'}));
     % masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('glasser'),{'Ctx_V'}));
     disp('masked_dat done')
     
     %UPDATED: this line resamples size of imagefeatures (video_imageFeatures) by row (182) to the size of the BOLD data (masked_dat.dat) by column (5470): resample = data resized by p/q: resample(data, p, q)
     features = resample(double(video_imageFeatures),size(masked_dat.dat,2),lendelta);
-    features = [features resample(double(video_imageFeatures_FAN),size(masked_dat.dat,2),lendelta_FAN)];
-   
     disp('resample features done')
     
     %This loop convolutes the video image features to match time delay of hemodynamic BOLD data
@@ -48,7 +45,7 @@ for s = 1:length(subjects)
     disp('timematched_features done')
 
     %UPDATED to extract and save betas
-    [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',20); % b = regression coefficient (beta)
+    [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',10); % b = regression coefficient (beta)
     disp('beta done')
 
     kinds = crossvalind('k',length(masked_dat.dat),5);
@@ -58,8 +55,8 @@ for s = 1:length(subjects)
 
     %for k=1:5
 
-        %[xl,yl,xs,ys,beta_cv,pctvar] = plsregress(timematched_features(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(20,size(masked_dat.dat,1))); %size(masked_dat.dat,1)=252
-        %disp('plsregress done')
+        %[xl,yl,xs,ys,beta_cv,pctvar] = plsregress(timematched_features(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(10,size(masked_dat.dat,1))); %size(masked_dat.dat,1)=252
+        %isp('plsregress done')
 
         %yhat(kinds==k,:)=[ones(length(find(kinds==k)),1) timematched_features(kinds==k,:)]*beta_cv;
         %disp('yhat done')
@@ -72,13 +69,6 @@ for s = 1:length(subjects)
 
     %end
 
-    %mean_diag_corr = mean(diag_corr)
-    
-    %save(['sub-' subjects{s} '_pSTS_multi_intermed_imageFeatures_output.mat'], 'mean_diag_corr', '-v7.3')
-
-    %UPDATED
-    %save(['beta_sub-' subjects{s} '_pSTS_multi_intermed_imageFeatures.mat'], 'b', '-v7.3')
-
     yhat_resub=[ones(length(kinds),1) timematched_features]*b;
     disp('yhat done')
 
@@ -89,5 +79,13 @@ for s = 1:length(subjects)
     disp('diag_corr done')
 
     mean_diag_corr(s,:) = mean(diag_corr_resub);
+
+    %mean_diag_corr = mean(diag_corr);
+    
+    %save(['sub-' subjects{s} '_pSTS_EmoFAN_lastConvTotal_imageFeatures_output.mat'], 'mean_diag_corr', '-v7.3')
+
+    %UPDATED
+    %save(['beta_sub-' subjects{s} '_pSTS_EmoFAN_lastConvTotal_imageFeatures.mat'], 'b', '-v7.3')
+
 end
-save("pSTS_noise_ceiling_multimodal_intermed.mat", 'mean_diag_corr', '-v7.3')
+save("/home/data/eccolab/Code/NNDb/pSTS_noise_ceiling_emoFAN_late.mat", 'mean_diag_corr', '-v7.3')

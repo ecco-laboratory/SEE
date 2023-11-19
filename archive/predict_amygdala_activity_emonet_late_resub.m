@@ -1,13 +1,11 @@
 %This is a script to use IMAGE features extracted by a specified layer of NN (EmoNet) to predict amygdala activity from BOLD data acquired from NNDb
 %includes beta (b) extraction = regression coefficients from our encoding models; betas are the mapping between units in the convnet and BOLD response (pattern of beta coefficients that we used to predict amygdala responses with)
 
-addpath(genpath('/home/data/eccolab/Code/GitHub'))
-load('500_days_of_summer_fc8_features.mat')
-t=readtable('/home/data/eccolab/Code/GitHub/emonet/emonet_face_output_NNDB_lastFC.txt');
-video_imageFeatures_FAN = table2array(t);
-
+addpath(genpath('/home/data/eccolab/Code/Github/CanlabCore'))
+addpath('/home/data/eccolab/Code/GitHub/spm12')
+addpath(genpath('/home/data/eccolab/Code/GitHub/Neuroimaging_Pattern_Masks'))
+load('/home/data/eccolab/Code/NNDb/500_days_of_summer_fc8_features.mat')
 lendelta = size(video_imageFeatures, 1);
-lendelta_FAN = size(video_imageFeatures_FAN,1);
 
 %an array to iterate all the subjects
 subjects = {'1' '2' '3' '4' '5' '6' '7' '8' '9' '10' '11' '12' '13' '14' '15' '16' '17' '18' '19' '20'};
@@ -25,8 +23,6 @@ for s = 1:length(subjects)
     
     %UPDATED: this line resamples size of imagefeatures (video_imageFeatures) by row (182) to the size of the BOLD data (masked_dat.dat) by column (5470): resample = data resized by p/q: resample(data, p, q)
     features = resample(double(video_imageFeatures),size(masked_dat.dat,2),lendelta);
-    features = [features resample(double(video_imageFeatures_FAN),size(masked_dat.dat,2),lendelta_FAN)];
-   
     disp('resample features done')
     
     %This loop convolutes the video image features to match time delay of hemodynamic BOLD data
@@ -42,51 +38,49 @@ for s = 1:length(subjects)
     end
 
     %UPDATED(x2): this line matches/cuts the length of conv_features to match with length of BOLD data
-    timematched_features = conv_features(1:size(masked_dat.dat,2),:);
+    timematched_features = conv_features(1:size(masked_dat.dat,2),:); %timematched_fetaures = X = ANN activations/abstract visual features of emo categories
     disp('timematched_features done')
 
-    %UPDATED to extract and save betas
-    [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',20); % b = regression coefficient (beta)
+    %UPDATED to extract and save betas (makes predictions in other data) (PLS is linear linking of X = ANN activations/abstract visual features of emo categories to Y = observed BOLD activations in amygdala voxels)
+    [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',20); % b = regression coefficient (beta) (20 = number of dimensions we want to reduce pls model; x to z = 4096 to 20?)
     disp('beta done')
 
-    kinds = crossvalind('k',length(masked_dat.dat),5);
+    kinds = crossvalind('k',length(masked_dat.dat),5); %cross-validation below (k-fold = 5) to make sure encoding model's predicted activations (yhat) are valid/correct/correlated with observed BOLD activations (Y) 
     disp('kinds done')
 
     clear yhat pred_obs_corr diag_corr conv_features
 
-    %for k=1:5
+    %for k=1:5 % k-fold cross-validation = 5
 
-        %[xl,yl,xs,ys,beta_cv,pctvar] = plsregress(timematched_features(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(20,size(masked_dat.dat,1))); %size(masked_dat.dat,1)=252
+        %[xl,yl,xs,ys,beta_cv,pctvar] = plsregress(timematched_features(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(20,size(masked_dat.dat,1))); %size(masked_dat.dat,1)=252; x to z dimension reduction
         %disp('plsregress done')
 
-        %yhat(kinds==k,:)=[ones(length(find(kinds==k)),1) timematched_features(kinds==k,:)]*beta_cv;
+        %yhat(kinds==k,:)=[ones(length(find(kinds==k)),1) timematched_features(kinds==k,:)]*beta_cv; %yhat = predicted y = X*beta = predicted activations in ROI
         %disp('yhat done')
 
-        %pred_obs_corr(:,:,k)=corr(yhat(kinds==k,:), masked_dat.dat(:,kinds==k)');
+        %pred_obs_corr(:,:,k)=corr(yhat(kinds==k,:), masked_dat.dat(:,kinds==k)'); %what is the correlation between predicted amygdala activations (yhat) with observed amygdala activations (Y) by voxels?
         %disp('pred_obs_corr done')
 
-        %diag_corr(k,:)=diag(pred_obs_corr(:,:,k));
+        %diag_corr(k,:)=diag(pred_obs_corr(:,:,k)); %diagonal correlation
         %disp('diag_corr done')  
 
     %end
-    
+
     yhat_resub = [ones(length(kinds),1) timematched_features]*b;
-    disp('yhat_resub_done')
+    disp('yhat done')
 
     pred_obs_corr_resub = corr(yhat_resub, masked_dat.dat');
-    disp('pred_obs_corr_done')
+    disp('pred_obs_corr done')
 
     diag_corr_resub = diag(pred_obs_corr_resub);
-    disp('diag_corr_resub done')
+    disp('diag_corr done')
 
-    mean_diag_corr(s,:) = mean(diag_corr_resub);
+    mean_diag_corr(s,:) = mean(diag_corr_resub)
     
-    %mean_diag_corr = mean(diag_corr)
-    
-    %save(['sub-' subjects{s} '_amygdala_multi_invert_imageFeatures_output.mat'], 'mean_diag_corr', '-v7.3')
+    %save(['sub-' subjects{s} '_amygdala_fc8_invert_imageFeatures_output.mat'], 'mean_diag_corr', '-v7.3')
 
     %UPDATED
-    %save(['beta_sub-' subjects{s} '_amygdala_multi_invert_imageFeatures.mat'], 'b', '-v7.3')
+    %save(['beta_sub-' subjects{s} '_amygdala_fc8_invert_imageFeatures.mat'], 'b', '-v7.3')
 
 end
-save("pSTS_noise_ceiling_multimodal_late.mat", 'mean_diag_corr', '-v7.3')
+save("/home/data/eccolab/Code/NNDb/SEE/amygdala_noise_ceiling_emonet_late.mat", 'mean_diag_corr', '-v7.3')

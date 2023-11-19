@@ -1,0 +1,22 @@
+/var/lib/slurm-llnl/slurmd/job19640/slurm_script: line 8: ​: command not found
+environment: line 38: /usr/bin/tclsh8.6: No such file or directory
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2022 The MathWorks, Inc.
+             R2022a Update 1 (9.12.0.1927505) 64-bit (glnxa64)
+                               April 6, 2022
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+{Error using load
+'500_days_of_summer_fc8_features.mat' is not found in the current folder or on
+the MATLAB path, but exists in:
+    /home/data/eccolab/Code/NNDb
+
+Change the MATLAB current folder or add its folder to the MATLAB path.
+
+Error in predict_amygdala_activity_emonet_fc8_10dims (line 8)
+load('500_days_of_summer_fc8_features.mat')
+} 

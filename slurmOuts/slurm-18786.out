@@ -1,0 +1,102 @@
+/var/lib/slurm-llnl/slurmd/job18786/slurm_script: line 8: ​: command not found
+environment: line 38: /usr/bin/tclsh8.6: No such file or directory
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2022 The MathWorks, Inc.
+             R2022a Update 1 (9.12.0.1927505) 64-bit (glnxa64)
+                               April 6, 2022
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+    ----------------------------------------------------
+	Your license will expire in 4 days.
+	Please contact your system administrator or
+	MathWorks to renew this license.
+    ----------------------------------------------------
+[Warning: Function narginchk has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function isequaln has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function iscolumn has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function ismatrix has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function isrow has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function narginchk has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function isequaln has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function contains has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function endsWith has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function newline has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function startsWith has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function isfile has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Function isfolder has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In predict_STS_activity_emoFAN_intermed_resub (line 4)] 
+[Warning: Removing
+"/home/data/eccolab/Code/GitHub/spm12/spm12/external/fieldtrip/compat/matlablt2016b"
+from your path.
+See
+http://www.fieldtriptoolbox.org/faq/should_i_add_fieldtrip_with_all_subdirectories_to_my_matlab_path/] 
+[Warning: Removing
+"/home/data/eccolab/Code/GitHub/spm12/spm12/external/fieldtrip/compat/matlablt2010b"
+from your path.
+See
+http://www.fieldtriptoolbox.org/faq/should_i_add_fieldtrip_with_all_subdirectories_to_my_matlab_path/] 
+[Warning:
+"/home/data/eccolab/Code/GitHub/spm12/spm12/external/fieldtrip/compat/matlablt2010b"
+not found in path.] 
+[> In rmpath (line 71)
+In isrow (line 35)
+In matlab.io.internal.functions.FunctionStore>accessMap (line 45)
+In matlab.io.internal.functions/FunctionStore/getFunctionByName (line 7)
+In readtable (line 513)
+In predict_STS_activity_emoFAN_intermed_resub (line 6)] 
+slurmstepd-node1: error: *** JOB 18786 ON node1 CANCELLED AT 2023-09-26T15:00:33 ***
