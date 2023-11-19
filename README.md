@@ -31,15 +31,15 @@ macOS Sonoma (14) macOS Ventura (13) macOS Monterey (12.6)
 We have tested this code on the following operating systems:
 Linux: Ubuntu 20.04 Mac: macOS Big Sur (11.5)
 
-Code and instructions for the EmoNet model can be found at [this repository] (https://github.com/ecco-laboratory/EmoNet)
-Code and instructions for the EmoFAN model can be found at [this repository] (https://github.com/face-analysis/emonet)
+Code and instructions for the EmoNet model can be found at [this repository](https://github.com/ecco-laboratory/EmoNet)
+Code and instructions for the EmoFAN model can be found at [this repository](https://github.com/face-analysis/emonet)
  
 This code requires the following packages and dependencies, which are listed in the environment.yml file:
 >BLOCK OF ENFIRONMENT.YML
 
 ## Installation Guide
-MATLAB can be installed by following the instructions [here] (https://www.mathworks.com/help/install/ug/install-products-with-internet-connection.html)
-PyTorch can be installed by following the instructions [here] (https://pytorch.org/get-started/locally/)
+MATLAB can be installed by following the instructions [here](https://www.mathworks.com/help/install/ug/install-products-with-internet-connection.html)
+PyTorch can be installed by following the instructions [here](https://pytorch.org/get-started/locally/)
 
 To install the environment using Anaconda, copy the “environment.yml” file to your directory and run the command “conda env create”
 
