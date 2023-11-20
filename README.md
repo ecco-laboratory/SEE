@@ -34,8 +34,25 @@ Linux: Ubuntu 20.04 Mac: macOS Big Sur (11.5)
 Code and instructions for the EmoNet model can be found at [this repository](https://github.com/ecco-laboratory/EmoNet)
 Code and instructions for the EmoFAN model can be found at [this repository](https://github.com/face-analysis/emonet)
  
-This code requires the following packages and dependencies, which are listed in the environment.yml file:
->BLOCK OF ENFIRONMENT.YML
+The EmoFAN code requires the following packages and dependencies, which are listed below and in the environment.yml file:
+>channels:
+>  - defaults
+>  - conda-forge
+>dependencies:
+>  - python
+>  - pandas
+>  - scikit-learn
+>  - numpy
+>  - matplotlib
+>  - IPython
+>  - graphviz
+>  - scikit-image=0.15.0
+>  - pip
+>  - pip:
+>     - torch
+>     - torchvision
+>     - torchviz
+>     - opencv-python
 
 ## Installation Guide
 MATLAB can be installed by following the instructions [here](https://www.mathworks.com/help/install/ug/install-products-with-internet-connection.html)
