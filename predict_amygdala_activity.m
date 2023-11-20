@@ -78,7 +78,7 @@ function predict_amygdala_activity(model,layer)
         disp('timematched_features done')
     
         %UPDATED to extract and save betas
-        [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',10); % b = regression coefficient (beta)
+        [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',dim); % b = regression coefficient (beta)
         disp('beta done')
     
         kinds = crossvalind('k',length(masked_dat.dat),5);
