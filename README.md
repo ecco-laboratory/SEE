@@ -6,11 +6,11 @@ This repo contains code and instructions for performing the analyses from the pa
 
 ## Repo Contents
 * **scripts**: 
-  - feature extraction: this folder contains scripts that use two artificial neural networks (EmoNet and EmoFAN) to process frames of the movie 500 Days of Summer and extract features related to emotional context and facial expression, respectively
-  - fitting encoding models: this folder contains scripts that fit encoding models for intermediate and late layers of each ANN to BOLD data from posterior STS and amygdala; prediction is measured by correlating the encoding model with the raw data
-  - comparing encoding models: this folder contains scripts that compare the predictive results across different encoding models
-  - writing out maps: this folder contains scripts that write out encoding model results onto brain maps for each subject
-  - performing inference on maps: this folder contains scripts that perform statistical inference on the spatial maps
+  - feature_extraction: this folder contains scripts that use two artificial neural networks (EmoNet and EmoFAN) to process frames of the movie 500 Days of Summer and extract features related to emotional context and facial expression, respectively
+  - fitting_encoding_models: this folder contains scripts that fit encoding models for intermediate and late layers of each ANN to BOLD data from posterior STS and amygdala; prediction is measured by correlating the encoding model with the raw data
+  - comparing_encoding_models: this folder contains scripts that compare the predictive results across different encoding models
+  - writing_out_maps: this folder contains scripts that write out encoding model results onto brain maps for each subject
+  - inference_on_maps: this folder contains scripts that perform statistical inference on the spatial maps
 * **sample data**: this folder contains sample data for running the demo in this repository
 * **paper**: this folder contains documents and figures for the paper
 
