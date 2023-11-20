@@ -1,15 +1,17 @@
 %This is a script that uses features extracted by a specified layer of ANN (EmoNet or EmoFAN) to predict amygdala activity from BOLD data acquired from NNDb
-function predict_amygdala(model,layer)
+function predict_amygdala_activity(model,layer)
     addpath(genpath('~/GitHub'))
     if model == 'emonet'
+        dim = 20;
         if layer == 'late'
-            video_imageFeatures = load(/PATH/'500_days_of_summer_fc8_features.mat');
-            keyword = 'emonet_late'
+            video_imageFeatures = load('/home/data/eccolab/Code/NNDb/SEE/500_days_of_summer_fc8_features.mat');
+            keyword = 'emonet_late';
         elseif layer == 'intermediate'
-            video_imageFeatures = load(/PATH/'500_days_of_summer_fc7_features.mat');
-            keyword = 'emonet_intermediate'
+            video_imageFeatures = load('/home/data/eccolab/Code/NNDb/SEE/500_days_of_summer_fc7_features.mat');
+            keyword = 'emonet_intermediate';
         end
     elseif model == 'emofan'
+        dim = 10;
         if layer == 'late'
             t=readtable(PATH/'emonet_face_output_NNDB_lastFC.txt')
             video_imageFeatures = table2array(t);
@@ -20,15 +22,18 @@ function predict_amygdala(model,layer)
             keyword = 'emofan_intermediate'
         end
     elseif model == 'combined'
+        dim = 20;
         if layer == 'late'
             t=readtable(PATH/'emonet_face_output_NNDB_lastFC.txt');
             video_imageFeatures_fan = table2arrray(t);
-            video_imageFeatures_net = load(PATH/'500_days_of_summer_fc8_features.mat');
+            lendelta_fan = size(video_imageFeatures_fan, 1);
+            video_imageFeatures = load(PATH/'500_days_of_summer_fc8_features.mat');
             keyword = 'combined_late'
         elseif layer == 'intermediate'
             t=readtable(PATH/'emoFAN_NNDB_lastConv_total.txt');
             video_imageFeatures_fan = table2array(t);
-            video_imageFeatures_net = load(PATH/'500_days_of_summer_fc7_features.mat');
+            lendelta_fan = size(video_imageFeatures_fan, 1);
+            video_imageFeatures = load(PATH/'500_days_of_summer_fc7_features.mat');
             keyword = 'combined_intermediate'
         end
     else
@@ -51,6 +56,9 @@ function predict_amygdala(model,layer)
         
         %UPDATED: this line resamples size of imagefeatures (video_imageFeatures) by row (182) to the size of the BOLD data (masked_dat.dat) by column (5470): resample = data resized by p/q: resample(data, p, q)
         features = resample(double(video_imageFeatures),size(masked_dat.dat,2),lendelta);
+        if model = 'combined'
+            features = [features resample(double(video_imageFeatures_fan),size(masked_dat.dat,2),lendelta_fan)];
+        end
         disp('resample features done')
         
         %This loop convolutes the video image features to match time delay of hemodynamic BOLD data
@@ -80,7 +88,7 @@ function predict_amygdala(model,layer)
     
         for k=1:5
     
-            [xl,yl,xs,ys,beta_cv,pctvar] = plsregress(timematched_features(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(10,size(masked_dat.dat,1))); %size(masked_dat.dat,1)=252
+            [xl,yl,xs,ys,beta_cv,pctvar] = plsregress(timematched_features(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(dim,size(masked_dat.dat,1))); %size(masked_dat.dat,1)=252
             disp('plsregress done')
     
             yhat(kinds==k,:)=[ones(length(find(kinds==k)),1) timematched_features(kinds==k,:)]*beta_cv;
