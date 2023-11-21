@@ -1,6 +1,6 @@
 # Sensory Encoding of Emotion (SEE)
 
-#### Update: 11/18/2023
+#### Update: 11/20/2023
 
 This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.] (BIORXIV LINK HERE)
 
@@ -9,8 +9,7 @@ This repo contains code and instructions for performing the analyses from the pa
   - feature_extraction: this folder contains scripts that use two artificial neural networks (EmoNet and EmoFAN) to process frames of the movie 500 Days of Summer and extract features related to emotional context and facial expression, respectively
   - fitting_encoding_models: this folder contains scripts that fit encoding models for intermediate and late layers of each ANN to BOLD data from posterior STS and amygdala; prediction is measured by correlating the encoding model with the raw data
   - comparing_encoding_models: this folder contains scripts that compare the predictive results across different encoding models
-  - writing_out_maps: this folder contains scripts that write out encoding model results onto brain maps for each subject
-  - inference_on_maps: this folder contains scripts that perform statistical inference on the spatial maps
+  - brain_map_results: this folder contains scripts that write out encoding model results onto brain maps for each subject
 * **sample_data**: this folder contains sample data for running the demo in this repository
 * **paper**: this folder contains documents and figures for the paper
 
@@ -23,7 +22,7 @@ For faster performance, MATLAB and PyTorch support NVIDIA® GPU architectures wi
 
 ### Software Requirements
 **OS Requirements**
-This software has been tested on Windows and Linux operating systems.
+This software has been tested on Windows, Mac and Linux operating systems.
 MATLAB Requires the following operating systems:
 Windows 11 Windows 10 (version 21H2 or higher) Windows Server 2019 Windows Server 2022
 Ubuntu 22.04 LTS Ubuntu 20.04 LTS Debian 11 Red Hat Enterprise Linux 9 Red Hat Enterprise Linux 8 (minimum 8.6) Red Hat Enterprise Linux 7 (minimum 7.9) SUSE Linux Enterprise Desktop 15 SUSE Linux Enterprise Server 12 (minimum SP2) SUSE Linux Enterprise Server 15
@@ -75,6 +74,5 @@ MASKED STS DATA FITTING ENCODING MODEL ON THAT
 1. Feature extraction
 2. Fitting encoding models
 3. Comparing encoding models
-4. Writing out maps
-5. Inference on maps
+4. Writing out results onto brain maps
 

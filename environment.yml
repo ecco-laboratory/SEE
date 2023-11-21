@@ -1,0 +1,19 @@
+name: emonet_face
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python
+  - pandas
+  - scikit-learn
+  - numpy
+  - matplotlib
+  - IPython
+  - graphviz
+  - scikit-image=0.15.0
+  - pip
+  - pip:
+     - torch
+     - torchvision
+     - torchviz
+     - opencv-python
