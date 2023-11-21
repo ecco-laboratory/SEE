@@ -1,48 +1,48 @@
 %% load up encoding model results
 
 for s=1:20
-    load(['sub-' num2str(s) '_amygdala_EmoFAN_totalConv_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_Amy_emofan_intermediate_mean_diag_corr.mat']); 
     avgcorr_amygdala_EmoFAN_conv(s) = mean(mean_diag_corr);
 %     csvwrite("amygdala_emoFAN_int.csv",avgcorr_amygdala_EmoFAN_conv)
 
-    load(['sub-' num2str(s) '_pSTS_EmoFAN_lastConvTotal_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_pSTS_emofan_intermediate_mean_diag_corr.mat']); 
     avgcorr_pSTS_EmoFAN_conv(s) = mean(mean_diag_corr);
 %     csvwrite("pSTS_emoFAN_int.csv", avgcorr_pSTS_EmoFAN_conv)
 
 
-    load(['sub-' num2str(s) '_amygdala_fc7_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_Amy_emonet_intermediate_mean_diag_corr.mat']); 
     avgcorr_amygdala_EmoNet_fc7(s) = mean(mean_diag_corr);
 %     csvwrite("amygdala_EmoNet_int.csv", avgcorr_amygdala_EmoNet_fc7)
 
-    load(['sub-' num2str(s) '_STS_emonet_fc7_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_pSTS_emonet_intermediate_mean_diag_corr.mat']); 
     avgcorr_pSTS_EmoNet_fc7(s) = mean(mean_diag_corr);
 %     csvwrite("pSTS_EmoNet_int.csv",avgcorr_pSTS_EmoNet_fc7)
 
-    load(['sub-' num2str(s) '_amygdala_fc8_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_Amy_emonet_late_mean_diag_corr.mat']); 
     avgcorr_amygdala_EmoNet(s) = mean(mean_diag_corr);
 
-    load(['sub-' num2str(s) '_STS_emonet_fc8_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_pSTS_emonet_late_mean_diag_corr.mat']); 
     avgcorr_pSTS_EmoNet(s) = mean(mean_diag_corr);
 
 
-    load(['sub-' num2str(s) '_amygdala_multi_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_Amy_combined_late_mean_diag_corr.mat']); 
     avgcorr_amygdala_multi(s) = mean(mean_diag_corr);
 
-    load(['sub-' num2str(s) '_pSTS_multi_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_pSTS_combined_late_mean_diag_corr.mat']); 
     avgcorr_pSTS_multi(s) = mean(mean_diag_corr);
 
 
-    load(['sub-' num2str(s) '_amygdala_multi_intermed_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_Amy_combined_intermediate_mean_diag_corr.mat']); 
     avgcorr_amygdala_multi_intermed(s) = mean(mean_diag_corr);
 
-    load(['sub-' num2str(s) '_pSTS_multi_intermed_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_pSTS_combined_intermediate_mean_diag_corr.mat']); 
     avgcorr_pSTS_multi_intermed(s) = mean(mean_diag_corr);
 
 
-    load(['sub-' num2str(s) '_pSTS_EmoFAN_lastFC_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_pSTS_emofan_late_mean_diag_corr.mat']); 
     avgcorr_pSTS_EmoFAN_final(s) = mean(mean_diag_corr);
 
-    load(['sub-' num2str(s) '_amygdala_EmoFAN_lastFC_invert_imageFeatures_output.mat']); 
+    load(['sub-' num2str(s) '_Amy_emofan_late_mean_diag_corr.mat']); 
     avgcorr_amygdala_EmoFAN_final(s) = mean(mean_diag_corr);
 
 
@@ -55,7 +55,7 @@ X_all = [avgcorr_amygdala_EmoFAN_final' avgcorr_amygdala_EmoNet' avgcorr_amygdal
 %% performance of final fully connected layers
 X_late = [ avgcorr_amygdala_EmoFAN_final' avgcorr_amygdala_EmoNet' avgcorr_amygdala_multi' avgcorr_pSTS_EmoFAN_final' avgcorr_pSTS_EmoNet'  avgcorr_pSTS_multi'];
 
-
+%plot late layers
 barplot_columns(X_late,'dolines')
 title 'Late Features'
 set(gca,'XTickLabel',{'Amygdala EmoFAN' 'Amygdala EmoNet'  'Amygdala Multi' 'pSTS EmoFAN' 'pSTS EmoNet' 'pSTS Multi'})
@@ -65,11 +65,13 @@ ylabel 'Prediction-Outcome Correlation'
 %% performance of intermediate layers (convolutional layer/fc7)
 X_int = [ avgcorr_amygdala_EmoFAN_conv' avgcorr_amygdala_EmoNet_fc7' avgcorr_amygdala_multi_intermed' avgcorr_pSTS_EmoFAN_conv' avgcorr_pSTS_EmoNet_fc7'  avgcorr_pSTS_multi_intermed'];
 
+%plot intermediate layers
 barplot_columns(X_int,'dolines')
 title 'Intermediate Features'
 set(gca,'XTickLabel',{'Amygdala EmoFAN' 'Amygdala EmoNet'  'Amygdala Multi' 'pSTS EmoFAN' 'pSTS EmoNet' 'pSTS Multi'})
 set(gca,'Xlabel',[])
 ylabel 'Prediction-Outcome Correlation'
+
 %% 2 way anova with ROI and model as factors (2 by 3) for late only
 for v=1:6
     varNames{v}=['V' num2str(v)];
@@ -89,7 +91,7 @@ lateAnovaTable = ranova(rm, 'WithinModel', "Region*Model")
 
 late_table_posthocs = multcompare(rm,'Model','By','Region')
 
-%save("2way_anova_table_late.mat","lateAnovaTable")
+save("2way_anova_table_late.mat","lateAnovaTable")
 %% 2 way anova with ROI and model as factors (2 by 3) for intermediate only
 for v=1:6
     varNames2{v}=['V' num2str(v)];
@@ -108,11 +110,10 @@ rm = fitrm(t_encoding_performance, 'V1-V6~1', 'WithinDesign', within);
 intAnovaTable = ranova(rm, 'WithinModel', "Region*Model")
 int_table_posthocs = multcompare(rm,'Model','By','Region')
 
-%save('2way_anova_table_int','intAnovaTable')
+save('2way_anova_table_int','intAnovaTable')
 
 %% repeated measures anova with ROI, depth, and model as factors (2 by 2 by 3)
 
-% varNames = {'Amygdala_EmoFAN_Int' 'Amygdala_EmoNet_Int'  'Amygdala_Multi_Int' 'pSTS_EmoFAN_Int' 'pSTS_EmoNet_Int'  'pSTS_Multi_Int'  'Amygdala_EmoFAN_Late' 'Amygdala_EmoNet_Late'  'Amygdala_Multi_Late' 'pSTS_EmoFAN_Late' 'pSTS_EmoNet_Late'  'pSTS_Multi_Late'};
 for v=1:12
     varNames{v}=['V' num2str(v)];
 end
@@ -137,7 +138,7 @@ sphericity = mauchly(rm)
 
 %%
 epsilonTest = epsilon(rm)
-%% Amygdala only model
+%% 2-way anova comparing model and depth for Amygdala 
 clear varNames
 for v=1:6
     varNames{v}=['V' num2str(v)];
@@ -159,7 +160,7 @@ rm = fitrm(t_encoding_performance,'V1-V6~1','WithinDesign',within);
 
 Mrm2 = multcompare(rm,'Model','By','Depth','ComparisonType','dunn-sidak')
 
-%% pSTS only model
+%% 2 way anova comparing model and depth for pSTS 
 clear varNames
 for v=1:6
     varNames{v}=['V' num2str(v)];
@@ -184,7 +185,7 @@ Mrm2 = multcompare(rm,'Model','By','Depth','ComparisonType','dunn-sidak')
 
 
 
-%%
+%% plotting results with box plots and rain cloud plots
 figure;
 cb = hot(6);
 varNames = {'Amygdala Intermediate' 'Amygdala Late' 'pSTS Intermediate'  'pSTS Late'};
