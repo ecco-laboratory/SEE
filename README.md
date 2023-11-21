@@ -1,6 +1,6 @@
 # Sensory Encoding of Emotion (SEE)
 
-#### Update: 11/20/2023
+#### Update: 11/21/2023
 
 This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.] (BIORXIV LINK HERE)
 
@@ -53,7 +53,9 @@ The EmoFAN code requires the following packages and dependencies, which are list
 >     - torch
 >     - torchvision
 >     - torchviz
->     - opencv-python
+>     - opencv-python  
+
+Data from the Naturalistic Neuroimaging Database (Aliko et al., 2020) can be downloaded [here.](https://openneuro.org/datasets/ds002837/versions/2.0.0)
 
 ## Installation Guide
 MATLAB can be installed by following the instructions [here](https://www.mathworks.com/help/install/ug/install-products-with-internet-connection.html)
@@ -63,12 +65,22 @@ PyTorch can be installed by following the instructions [here](https://pytorch.or
 To install the environment using Anaconda, copy the “environment.yml” file to your directory and run the command “conda env create”
 
 ## Demo
-This demo illustrates the process of fitting an encoding model for one subject based on features from EmoNet and EmoFAN and comparing it to the brain data. To run the demo, 
-(This needs to have instructions to run on data, expected output, expected runtime for demo)
-MASKED STS DATA FITTING ENCODING MODEL ON THAT
+This demo illustrates the process of fitting an encoding model for one subject based on features from EmoNet and EmoFAN and comparing it to the brain data. 
+
+To run the demo, download the data in the sample_data folder and be sure to have the demo.m script cloned on your local machine.
+
+The expected output is:
+
+The expected runtime is:
 
 ## Instructions for Use
-(This needs to have instructions for running things on our data, reproduction instructions)
+1. To run the feature extraction step, download the video files (in mp4 format) from the Naturalistic Neuroimaging Database. For emonet_intermediate_500_days_of_summer.m and emonet_late_500_days_of_summer.m, update the vid_path variable to match the location in your file system before running each script. For emofan_intermediate_500_days_of_summer.py and emofan_late_500_days_of_summer.py, run convert_to_frames.py to create a folder with all of the frames of the movie. Update the test_dataset_no_flip variable to match the path in your file system before running each script.
+2. To run the fiting_encoding_models step, ensure that you have the feature files and fit_encoding_model.m downloaded, and run the function fit_encoding_model(model, layer, region) with the following input options:
+   >**model** - string indicating the ANN to use to extract features: ('emonet', 'emofan', or 'combined')
+   >**layer** - string indicating the layers to use for analysis: ('late' or 'intermediate')
+   >**region** - string indicating the ROI to predict: ('Amy' or 'STS')
+3. To run the comparing_encoding_step, ensure that you have the outputs from fit_encoding_model.m for all 20 subjects before running the compare_encoding_performance.m script.
+4. To run the brain_map_results step, ensure that you have the outputs from fit_encoding_model.m for all 20 subjects before running the group_inference_amygdala.m and group_inference_pSTS.m scripts.
 
 ## Pseudocode/Description of Code's Functionality
 1. Feature extraction
