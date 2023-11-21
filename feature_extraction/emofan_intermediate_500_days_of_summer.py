@@ -135,27 +135,4 @@ with open('emoFAN_NNDB_lastConv_total.txt', 'a') as output_file:
     #actsFromLastFC.remove()
 output_file.close()
 print(f'File finished')
-    
-# get labels for clips
-#import pandas as pd 
-#datalabels = pd.read_csv('/home/data/eccolab/OpenNeuro/ds002837/stimuli/500_days_of_summer/frames/labels.csv', sep=',', header = None)
-#labels = datalabels.iloc[1:,1]
 
-
-#encoder = OneHotEncoder(sparse=False)
-#n_labels = labels.to_numpy()
-#r_labels = n_labels.reshape(-1,1)
-#onehot = encoder.fit_transform(r_labels)
-
-# run PLS regression
-#pls14 = PLSRegression(n_components=14)
-#pls14.fit(lastConv_list, onehot)                         
-#y_cv = cross_val_predict(pls14, lastConv_list, y, cv=5)                         
-#Y_predicted = pls14.predict(lastConv_list)
-#r2 = r2_score(onehot, Y_predicted)
-#mse = mean_squared_error(onehot, Y_predicted)
-
-#np.savetxt('emonet_face_output_NNDB_expression.txt', expr)
-#np.savetxt('emonet_face_output_NNDB_lastConv_total.txt', lastConv_total)
-#np.savetxt('emonet_face_output_NNDB_penultFC.txt', penultFC_list)
-#np.savetxt('emonet_face_output_NNDB_lastFC.txt', lastFC_list)

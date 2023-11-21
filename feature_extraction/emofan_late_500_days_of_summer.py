@@ -83,7 +83,6 @@ def getActivation(name):
     return hook
 
 # set up hooks
-actsFromLastConv = net.emo_net_2[6].conv3.register_forward_hook(getActivation('lastConv'))
 actsFromPenultFC = net.emo_fc_2[0].register_forward_hook(getActivation('penultFC'))
 actsFromLastFC = net.emo_fc_2[3].register_forward_hook(getActivation('lastFC'))
 print(f'Hooks are set up')
@@ -98,7 +97,6 @@ for index, data in enumerate(test_dataloader_no_flip):
         out = net(images)
     numimgs = images.shape
     numimgs = numimgs[0]
-    temp_X = torch.reshape(activation['lastConv'],(numimgs,-1,))
 #    temp_X_2 = temp_X.unsqueeze(0)
     temp_Y = torch.reshape(activation['penultFC'],(numimgs,-1,))
 #    temp_Y_2 = temp_Y.unsqueeze(0)
@@ -107,44 +105,21 @@ for index, data in enumerate(test_dataloader_no_flip):
 #    print(temp_X.shape)
 
     if index == 0:
-       lastConv_list = temp_X.cpu().numpy()
        penultFC_list = temp_Y.cpu().numpy()
        lastFC_list = temp_Z.cpu().numpy()
     else:
-       lastConv_list = np.append(lastConv_list, temp_X.cpu().numpy(), axis = 0)
        penultFC_list = np.append(penultFC_list, temp_Y.cpu().numpy(), axis = 0)
        lastFC_list = np.append(lastFC_list, temp_Z.cpu().numpy(), axis = 0)
     expr_tmp = out['expression']
     counter += 1
     expr = np.append(expr, np.argmax(np.squeeze(expr_tmp.cpu().numpy()), axis=1), axis=0)
 print(counter)
-print(lastConv_list.shape)
 print(expr.shape)
     
 print(f'Activations obtained')
-actsFromLastConv.remove()            
 actsFromPenultFC.remove()
 actsFromLastFC.remove()
                          
-
-# get labels for clips
-#import pandas as pd 
-#datalabels = pd.read_csv('/home/data/eccolab/OpenNeuro/ds002837/stimuli/500_days_of_summer/frames/labels.csv', sep=',', header = None)
-#labels = datalabels.iloc[1:,1]
-
-
-#encoder = OneHotEncoder(sparse=False)
-#n_labels = labels.to_numpy()
-#r_labels = n_labels.reshape(-1,1)
-#onehot = encoder.fit_transform(r_labels)
-
-# run PLS regression
-#pls14 = PLSRegression(n_components=14)
-#pls14.fit(lastConv_list, onehot)                         
-#y_cv = cross_val_predict(pls14, lastConv_list, y, cv=5)                         
-#Y_predicted = pls14.predict(lastConv_list)
-#r2 = r2_score(onehot, Y_predicted)
-#mse = mean_squared_error(onehot, Y_predicted)
 
 np.savetxt('emonet_face_output_NNDB_expression.txt', expr)
 np.savetxt('emonet_face_output_NNDB_lastConv.txt', lastConv_list)
