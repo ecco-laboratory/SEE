@@ -6,7 +6,7 @@ load netTransfer_20cat.mat
 featureLayer = 'fc8';
 % specify path where the movie file is
 % note: edit to indicate path on your local system
-vid_path(['/home/data/eccolab/OpenNeuro/ds002837/stimuli/500_days_of_summer.mp4']);
+vid_path=(['/home/data/eccolab/OpenNeuro/ds002837/stimuli/500_days_of_summer.mp4']);
 
 clear video_*
 

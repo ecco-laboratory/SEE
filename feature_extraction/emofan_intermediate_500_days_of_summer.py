@@ -48,6 +48,7 @@ transform_image_shape_no_flip = DataAugmentor(image_size, image_size)
 print(f'Testing the model on {n_expression} emotional classes')
 
 print('Loading the data')
+# NOTE: Update the test_dataset_no_flip variable with the paths to the labels.csv file and frames from the movie as they are on your local system
 test_dataset_no_flip = MELD_clips(annotations_file='/home/data/eccolab/OpenNeuro/ds002837/stimuli/500_days_of_summer/labels.csv', img_dir='/home/data/eccolab/OpenNeuro/ds002837/stimuli/500_days_of_summer/frames/',transform_image_shape=transform_image_shape_no_flip, transform_image=transform_image)
 test_dataloader_no_flip = DataLoader(test_dataset_no_flip, batch_size=batch_size, shuffle=False, num_workers=n_workers)
 
