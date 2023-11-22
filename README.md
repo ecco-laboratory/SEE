@@ -69,9 +69,10 @@ This demo illustrates the process of fitting an encoding model for one subject b
 
 To run the demo, download the data in the sample_data folder and be sure to have the demo.m script cloned on your local machine.
 
-The expected output is:
+The expected output is a set of matrixes that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
+This includes: sub-1_pSTS_emonet_late_mean_diag_corr.mat, sub-1_pSTS_emofan_late_mean_diag_corr.mat and the beta values from the regression (beta_sub-1_pSTS_emonet_late_mean_diag_corr.mat and beta_sub-1_pSTS_emofan_late_mean_diag_corr.mat
 
-The expected runtime is:
+The expected runtime is 5-10 minutes.
 
 ## Instructions for Use
 1. To run the feature extraction step, download the video files (in mp4 format) from the Naturalistic Neuroimaging Database. For emonet_intermediate_500_days_of_summer.m and emonet_late_500_days_of_summer.m, update the vid_path variable to match the location in your file system before running each script. For emofan_intermediate_500_days_of_summer.py and emofan_late_500_days_of_summer.py, run convert_to_frames.py to create a folder with all of the frames of the movie. Update the test_dataset_no_flip variable to match the path in your file system before running each script.

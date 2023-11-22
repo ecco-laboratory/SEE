@@ -14,15 +14,14 @@ fmri_data_path = '[YOUR PATH HERE]/demo_data/';
 % note: can specify output directory here for saving files
 output_directory = '[YOUR PATH HERE]/outputs/';
 
-%% parse inputs and load extracted features
 
-%% Perform the analysis using the loaded data
+%% Load extracted features and perform the analysis using the loaded data
 video_imageFeatures = load("500_days_of_summer_fc8_features.mat");
 t = readtable('emonet_face_output_NNDB_lastFC.txt');
 video_imageFeatures_fan = table2array(t);
 lendelta = size(video_imageFeatures, 1);
 lendelta_fan = size(video_imageFeatures_fan, 1);
-    %load BOLD data for each subject
+    %load BOLD data for sub 1
     dat = fmri_data([fmri_data_path filesep 'sub-1_task-500daysofsummer_bold_blur_censor.nii.gz']);
 
     %mask BOLD data to isolate pSTS voxels ONLY
@@ -33,6 +32,7 @@ lendelta_fan = size(video_imageFeatures_fan, 1);
 
     %UPDATED: this line resamples size of imagefeatures (video_imageFeatures) by row (182) to the size of the BOLD data (masked_dat.dat) by column (5470): resample = data resized by p/q: resample(data, p, q)
     features = resample(double(video_imageFeatures),size(masked_dat.dat,2),lendelta);
+    features_fan = resample(double(video_imageFeatures_fan),size(masked_dat.dat,2),lendelta_fan);
     disp('resample features done')
 
     %This loop convolutes the video image features to match time delay of hemodynamic BOLD data
@@ -47,26 +47,21 @@ lendelta_fan = size(video_imageFeatures_fan, 1);
 
     end
 
+    % do the same for emofan
+    for j = 1:size(features_fan,2)
+        tmp2 = conv(double(features_fan(:,j)), spm_hrf(1));
+        conv_features_fan(:,j) = tmp2(:);
+    end
+
     %UPDATED(x2): this line matches/cuts the length of conv_features to match with length of BOLD data
     timematched_features = conv_features(1:size(masked_dat.dat,2),:);
+    timematched_features_fan = conv_features_fan(1:size(masked_dat.dat,2),:);
     disp('timematched_features done')
 
     %UPDATED to extract and save betas
     [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',20); % b = regression coefficient (beta)
+    [~,~,~,~,b_fan] = plsregress(timematched_features_fan, masked_dat.dat',10)
     disp('beta done')
-
-
-    % estimate noise ceiling for resubstitution
-    yhat_resub=[ones(length(kinds),1) timematched_features]*b;
-    disp('yhat done')
-
-    pred_obs_corr_resub=corr(yhat_resub, masked_dat.dat');
-    disp('pred_obs_corr done')
-
-    diag_corr_resub=diag(pred_obs_corr_resub);
-    disp('diag_corr done')
-
-    mean_diag_corr_resub(s,:) = mean(diag_corr_resub);
 
 
     kinds = crossvalind('k',length(masked_dat.dat),5);
@@ -90,14 +85,21 @@ lendelta_fan = size(video_imageFeatures_fan, 1);
 
     end
 
+    for k=1:5
+        [~,~,~,~,beta_cv_fan] = plsregress(timematched_features_fan(kinds~=k,:), masked_dat.dat(:,kinds~=k)', min(10, size(masked_dat.dat,1)));
+        yhat_fan(kinds==k,:)=[ones(length(find(kinds==k)),1) timematched_features_fan(kinds==k,:)]*beta_cv_fan;
+        pred_obs_corr_fan(:,:,k)=corr(yhat_fan(kinds==k,:), masked_dat.dat(:,kinds==k)');
+        diag_corr_fan(k,:)=diag(pred_obs_corr_fan(:,:,k));
+
 
     mean_diag_corr = mean(diag_corr); %estimate the average correlation between observed and predicted values
 
+    mean_diag_corr_fan = mean(diag_corr_fan);
+
     save([output_directory 'sub-1_pSTS_emonet_late_mean_diag_corr.mat'], 'mean_diag_corr', '-v7.3') %save performance measures for each subject
+
+    save([output_directory, 'sub-1_pSTS_emofan_late_mean_diag_corr.mat'], 'mean_diag_corr_fan', 'v7.3')
 
     save([output_directory 'beta_sub-1_pSTS_emonet_late_mean_diag_corr.mat'], 'b', '-v7.3') %save betas for each subject
 
-
-%% save out noise ceiling
-    save([output_directory 'noise_ceiling_pSTS_emonet_late.mat'], 'mean_diag_corr_resub')
-
+       save([output_directory 'beta_sub-1_pSTS_emofan_late_mean_diag_corr.mat'], 'b_fan', 'v7.3')
