@@ -4,20 +4,22 @@
 
 % note: you will need CanlabCore on your path %addpath(genpath('~/GitHub'))
 
+addpath(genpath('/home/data/eccolab/Code/GitHub/CanlabCore'))
+addpath('/home/data/eccolab/Code/GitHub/spm12')
+addpath(genpath('/home/data/eccolab/Code/GitHub/Neuroimaging_Pattern_Masks'))
+addpath(genpath('/home/data/eccolab/Code/GitHub/emonet'))
 %% set up some paths
 % note: update these paths with the folder you downloaded
-emofan_features_path = '[YOUR PATH HERE]/demo_data/emonet_face_output_NNDB_lastFC.txt';
-emonet_features_path = '[YOUR PATH HERE]/demo_data/500_days_of_summer_fc8_features.mat';
-fmri_data_path = '[YOUR PATH HERE]/demo_data/';
+fmri_data_path = '/home/data/eccolab/OpenNeuro/ds002837/derivatives/sub-1/func';
 
 
 % note: can specify output directory here for saving files
-output_directory = '[YOUR PATH HERE]/outputs/';
+output_directory = '/home/data/eccolab/Code/NNDb/SEE/outputs/';
 
 
 %% Load extracted features and perform the analysis using the loaded data
-load(emonet_features_path);
-t = readtable(emofan_features_path);
+load("500_days_of_summer_fc8_features.mat");
+t = readtable('/home/data/eccolab/Code/GitHub/emonet/emonet_face_output_NNDB_lastFC.txt');
 video_imageFeatures_fan = table2array(t);
 lendelta = size(video_imageFeatures, 1);
 lendelta_fan = size(video_imageFeatures_fan, 1);
@@ -60,7 +62,7 @@ lendelta_fan = size(video_imageFeatures_fan, 1);
 
     %UPDATED to extract and save betas
     [~,~,~,~,b] = plsregress(timematched_features,masked_dat.dat',20); % b = regression coefficient (beta)
-    [~,~,~,~,b_fan] = plsregress(timematched_features_fan, masked_dat.dat',10)
+    [~,~,~,~,b_fan] = plsregress(timematched_features_fan, masked_dat.dat',10);
     disp('beta done')
 
 
@@ -91,7 +93,7 @@ lendelta_fan = size(video_imageFeatures_fan, 1);
         pred_obs_corr_fan(:,:,k)=corr(yhat_fan(kinds==k,:), masked_dat.dat(:,kinds==k)');
         diag_corr_fan(k,:)=diag(pred_obs_corr_fan(:,:,k));
 
-
+    end
     mean_diag_corr = mean(diag_corr); %estimate the average correlation between observed and predicted values
 
     mean_diag_corr_fan = mean(diag_corr_fan);
