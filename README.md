@@ -57,6 +57,10 @@ The EmoFAN code requires the following packages and dependencies, which are list
 
 Data from the Naturalistic Neuroimaging Database (Aliko et al., 2020) can be downloaded [here.](https://openneuro.org/datasets/ds002837/versions/2.0.0)
 
+You will need to install the Canlab Core tools, as well as the Neuroimaging Pattern Masks repository, both of which are available [here.](https://canlab.github.io/_pages/canlab_help_1_installing_tools/canlab_help_1_installing_tools.html)
+
+You will also need spm12 installed on your machine; installation [here.](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/)
+
 ## Installation Guide
 MATLAB can be installed by following the instructions [here](https://www.mathworks.com/help/install/ug/install-products-with-internet-connection.html)
 
@@ -70,6 +74,7 @@ This demo illustrates the process of fitting an encoding model for one subject b
 To run the demo, download the data in the sample_data folder and be sure to have the demo.m script cloned on your local machine.
 
 The expected output is a set of matrixes that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
+
 This includes: sub-1_pSTS_emonet_late_mean_diag_corr.mat, sub-1_pSTS_emofan_late_mean_diag_corr.mat and the beta values from the regression (beta_sub-1_pSTS_emonet_late_mean_diag_corr.mat and beta_sub-1_pSTS_emofan_late_mean_diag_corr.mat
 
 The expected runtime is 5-10 minutes.
