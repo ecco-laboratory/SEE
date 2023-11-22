@@ -2,7 +2,7 @@
 
 #### Update: 11/22/2023
 
-This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.](BIORXIV LINK HERE)
+This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.](https://www.biorxiv.org/content/10.1101/2023.11.20.567556v1)
 
 ## Repo Contents
 * **scripts**: 
