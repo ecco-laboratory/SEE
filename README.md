@@ -73,7 +73,7 @@ This demo illustrates the process of fitting an encoding model for one subject b
 
 To run the demo, download the data in the sample_data folder and be sure to have the demo.m script cloned on your local machine.
 
-The expected output is a set of matrixes that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
+The expected output is a set of matrices that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
 
 This includes: sub-1_pSTS_emonet_late_mean_diag_corr.mat, sub-1_pSTS_emofan_late_mean_diag_corr.mat and the beta values from the regression (beta_sub-1_pSTS_emonet_late_mean_diag_corr.mat and beta_sub-1_pSTS_emofan_late_mean_diag_corr.mat
 
