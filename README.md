@@ -1,6 +1,6 @@
 # Sensory Encoding of Emotion (SEE)
 
-#### Update: 11/21/2023
+#### Update: 11/22/2023
 
 This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.] (BIORXIV LINK HERE)
 
@@ -84,8 +84,16 @@ The expected runtime is 5-10 minutes.
 4. To run the brain_map_results step, ensure that you have the outputs from fit_encoding_model.m for all 20 subjects before running the group_inference_amygdala.m and group_inference_pSTS.m scripts.
 
 ## Pseudocode/Description of Code's Functionality
-1. Feature extraction
+1. Feature extraction: - convert_to_frames.py reads the 500 Days of Summer movie file (in .mp4 format) and saves each frame as an image to the “frames” directory
+- emofan_intermediate_500_days_of_summer.py extracts the activations from an intermediate layer of EmoFAN. To do this, it creates a “dataloader” object that contains all of the frames from the movie. Next, it loads EmoFAN using PyTorch. Then it sets up “hooks” to capture the activations from the final convolutional layer (in EmoFAN’s structure, this layer has three subblocks, so each block is hooked and they are concatenated). Then, it loops through the frames of the movie and as each image is fed through the ANN, the activations get saved to an output file.
+ - emofan_late_500_days_of_summer.py performs the same steps as above, but saves out the activations for the final layer of the ANN.
+ - emonet_intermediate_500_days_of_summer.m extracts the activations from an intermediate layer of EmoNet. To do this, it loads the EmoNet model and specifies layer fc7 to be extracted. It then loops through the movie file, and for every fifth frame, reads the image and passes it to the ANN. For each image, activations from layer fc7 are extracted and saved to an output file.
+-emonet_late_500_days_of_summer.m performs the same steps as above, but saves out the activations for the final layer of the ANN (fc8).
 2. Fitting encoding models
+    - fit_encoding_model.m is a function that uses the activations extracted above to create encoding models to predict brain activity. To do this, it first loads the features of the ANN (specified as an input with either “emonet”, “emofan”, or “combined”.) Then, it loops through all subjects in the dataset (n=20). For each subject, BOLD data from the movie is loaded and masked with the region of interest (specified as an input with either “Amy” or “pSTS”). Then, the features from the ANN are resampled to match the BOLD data, and are convolved to match the timing of the hemodynamic response function. Next, PLS regression is performed using the features as predictors and the BOLD data as outcome, with the dimensionality of the PLS regression model specified by the “dim” variable (10 for EmoFAN, 20 for EmoNet and combined). Then, the noise ceiling for this prediction is estimated by resubstitution: multiplying the original BOLD data by the betas and comparing the result to the original BOLD data. Next, five-fold cross-validation is used to perform PLS regression on 4/5 of the data; the model is tested on the remaining 5th of the data. The prediction from this model is correlated with the original BOLD data to get an estimate of performance. The diagonal of the correlation matrix is averaged across folds, and saved for each subject. Finally, the noise ceiling estimation is saved for all subjects.
 3. Comparing encoding models
-4. Writing out results onto brain maps
+	- compare_encoding_performance.m computes ANOVAs to compare the performance of encoding models across model, region, and depth. To do this, it loads in the prediction metric (the correlation between encoding model prediction and BOLD data) for each subject. It plots performance across all combinations of the variables (model: EmoFAN, EmoNet, combined; region: amygdala, pSTS; depth: intermediate, late). Next, a two-way ANOVA is performed testing the effects of region and model in the late layers (2 by 3). Next, the same region by model two-way ANOVA is performed for the intermediate layers. Next, a three-way ANOVA is performed testing the effects of region, depth, and model (2 by 2 by 3). Finally, two two-way ANOVAs are performed testing the effects of model and depth separately for the amygdala and pSTS. Performance levels are plotted with box and rain cloud plots.
+4. Brain map results
+	- group_inference_pSTS.m performs voxelwise inference on model performance across subjects. To do this, it loads the prediction metric for each subject. Then, it performs t-tests on model performance comparing each encoding model’s performance to 0. In addition, a t-test comparing EmoNet to EmoFAN is performed. Finally, a t-test comparing the combined model to both EmoNet and EmoFAN is performed. The statistic maps are written out in brain space as a nifti file. 
+  	- group_inference_amygdala.m performs the same steps as above, but for model performance in amygdala. Because of differential subcortical coverage during data collection, not all subjects had all amygdala voxels, so non overlapping voxels were excluded from the analysis.
 
