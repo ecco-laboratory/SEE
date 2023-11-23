@@ -10,7 +10,8 @@ This repo contains code and instructions for performing the analyses from the pa
   - fitting_encoding_models: this folder contains scripts that fit encoding models for intermediate and late layers of each ANN to BOLD data from posterior STS and amygdala; prediction is measured by correlating the encoding model with the raw data
   - comparing_encoding_models: this folder contains scripts that compare the predictive results across different encoding models
   - brain_map_results: this folder contains scripts that write out encoding model results onto brain maps for each subject
-* **sample_data**: this folder contains sample data for running the demo in this repository
+  - demo.m: this script performs the demo analysis, which fits encoding models using EmoNet and EmoFAN for pSTS in one subject's BOLD data
+* **sample data**: sample data for the demo will be available at an [OSF repository](https://osf.io/6ntx5/)
 * **paper**: this folder contains documents and figures for the paper
 
 ## System Requirements
@@ -71,7 +72,7 @@ To install the environment using Anaconda, copy the “environment.yml” file t
 ## Demo
 This demo illustrates the process of fitting an encoding model for one subject based on features from EmoNet and EmoFAN and comparing it to the brain data. 
 
-To run the demo, download the data in the sample_data folder and be sure to have the demo.m script cloned on your local machine.
+To run the demo, download the sample data from the [OSF repository](https://osf.io/6ntx5/) and be sure to have the demo.m script cloned on your local machine.
 
 The expected output is a set of matrices that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
 
