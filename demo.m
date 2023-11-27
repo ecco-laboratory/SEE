@@ -6,7 +6,7 @@
 
 %% set up some paths
 % note: update these paths with the folder you downloaded
-emofan_features_path = '[YOUR PATH HERE]/demo_data/emonet_face_output_NNDB_lastFC.txt';
+emofan_features_path = '[YOUR PATH HERE]/demo_data/emofan_late_500_days_of_summer.txt';
 emonet_features_path = '[YOUR PATH HERE]/demo_data/500_days_of_summer_fc8_features.mat';
 fmri_data_path = '[YOUR PATH HERE]/demo_data/';
 
