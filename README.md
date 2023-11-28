@@ -2,7 +2,7 @@
 
 #### Update: 11/22/2023
 
-This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.](BIORXIV LINK HERE)
+This repo contains code and instructions for performing the analyses from the paper entitled "Sensory encoding of emotion conveyed by the face and visual context" (Soderberg, Jang, & Kragel, 2023, bioRxiv). The full text manuscript can be found [here.](https://www.biorxiv.org/content/10.1101/2023.11.20.567556v1)
 
 ## Repo Contents
 * **scripts**: 
@@ -10,7 +10,8 @@ This repo contains code and instructions for performing the analyses from the pa
   - fitting_encoding_models: this folder contains scripts that fit encoding models for intermediate and late layers of each ANN to BOLD data from posterior STS and amygdala; prediction is measured by correlating the encoding model with the raw data
   - comparing_encoding_models: this folder contains scripts that compare the predictive results across different encoding models
   - brain_map_results: this folder contains scripts that write out encoding model results onto brain maps for each subject
-* **sample_data**: this folder contains sample data for running the demo in this repository
+  - demo.m: this script performs the demo analysis, which fits encoding models using EmoNet and EmoFAN for pSTS in one subject's BOLD data
+* **sample data**: sample data for the demo will be available at an [OSF repository](https://osf.io/6ntx5/)
 * **paper**: this folder contains documents and figures for the paper
 
 ## System Requirements
@@ -57,6 +58,10 @@ The EmoFAN code requires the following packages and dependencies, which are list
 
 Data from the Naturalistic Neuroimaging Database (Aliko et al., 2020) can be downloaded [here.](https://openneuro.org/datasets/ds002837/versions/2.0.0)
 
+You will need to install the Canlab Core tools, as well as the Neuroimaging Pattern Masks repository, both of which are available [here.](https://canlab.github.io/_pages/canlab_help_1_installing_tools/canlab_help_1_installing_tools.html)
+
+You will also need spm12 installed on your machine; installation [here.](https://www.fil.ion.ucl.ac.uk/spm/software/spm12/)
+
 ## Installation Guide
 MATLAB can be installed by following the instructions [here](https://www.mathworks.com/help/install/ug/install-products-with-internet-connection.html)
 
@@ -67,15 +72,16 @@ To install the environment using Anaconda, copy the “environment.yml” file t
 ## Demo
 This demo illustrates the process of fitting an encoding model for one subject based on features from EmoNet and EmoFAN and comparing it to the brain data. 
 
-To run the demo, download the data in the sample_data folder and be sure to have the demo.m script cloned on your local machine.
+To run the demo, download the sample data from the [OSF repository](https://osf.io/6ntx5/) and be sure to have the demo.m script cloned on your local machine.
 
-The expected output is a set of matrixes that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
+The expected output is a set of matrices that contain the prediction-outcome correlation between brain data and encoding models for a single subject (sub-1)
+
 This includes: sub-1_pSTS_emonet_late_mean_diag_corr.mat, sub-1_pSTS_emofan_late_mean_diag_corr.mat and the beta values from the regression (beta_sub-1_pSTS_emonet_late_mean_diag_corr.mat and beta_sub-1_pSTS_emofan_late_mean_diag_corr.mat
 
 The expected runtime is 5-10 minutes.
 
 ## Instructions for Use
-1. To run the feature extraction step, download the video files (in mp4 format) from the Naturalistic Neuroimaging Database. For emonet_intermediate_500_days_of_summer.m and emonet_late_500_days_of_summer.m, update the vid_path variable to match the location in your file system before running each script. For emofan_intermediate_500_days_of_summer.py and emofan_late_500_days_of_summer.py, run convert_to_frames.py to create a folder with all of the frames of the movie. Update the test_dataset_no_flip variable to match the path in your file system before running each script.
+1. To run the feature extraction step, download the movie file (in .mp4 format) from the Naturalistic Neuroimaging Database. For emonet_intermediate_500_days_of_summer.m and emonet_late_500_days_of_summer.m, update the vid_path variable to match the location in your file system before running each script. For emofan_intermediate_500_days_of_summer.py and emofan_late_500_days_of_summer.py, run convert_to_frames.py to create a folder with all of the frames of the movie. Update the test_dataset_no_flip variable to match the path in your file system before running each script.
 2. To run the fitting_encoding_models step, ensure that you have the feature files and fit_encoding_model.m downloaded, and run the function fit_encoding_model(model, layer, region) with the following input options:
    >**model** - string indicating the ANN to use to extract features: ('emonet', 'emofan', or 'combined')
    >**layer** - string indicating the layers to use for analysis: ('late' or 'intermediate')
