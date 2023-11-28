@@ -11,7 +11,7 @@ This repo contains code and instructions for performing the analyses from the pa
   - comparing_encoding_models: this folder contains scripts that compare the predictive results across different encoding models
   - brain_map_results: this folder contains scripts that write out encoding model results onto brain maps for each subject
   - demo.m: this script performs the demo analysis, which fits encoding models using EmoNet and EmoFAN for pSTS in one subject's BOLD data
-* **sample data**: sample data for the demo will be available at an [OSF repository](https://osf.io/6ntx5/)
+* **sample data**: sample data for the demo are available at our [OSF repository](https://osf.io/6ntx5/)
 * **paper**: this folder contains documents and figures for the paper
 
 ## System Requirements
