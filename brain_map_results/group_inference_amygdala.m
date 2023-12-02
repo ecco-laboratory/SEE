@@ -8,7 +8,7 @@ addpath(genpath('~/Github'))
 
 subjects = {'1' '2' '3' '4' '5' '6' '7' '8' '9' '10' '11' '12' '13' '14' '15' '16' '17' '18' '19' '20'};
 
-load('amygdala_multimodal_ttest_excluded_voxels.mat')
+load('amygdala_excluded_voxels.mat')
 
 for s=1:20;
 

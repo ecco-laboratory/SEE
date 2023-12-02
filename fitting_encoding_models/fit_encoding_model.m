@@ -109,7 +109,8 @@ for s = 1:length(subjects)
 
 
     masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('canlab2018'),rcell));
-
+    if strcmp(region,'Amy')
+	excluded_voxels(s,:) = masked_dat.removed_voxels
 
     disp('masked_dat done')
 
@@ -183,6 +184,10 @@ for s = 1:length(subjects)
     save([output_directory 'beta_sub-' subjects{s} '_' region '_' model '_' layer '_mean_diag_corr.mat'], 'b', '-v7.3') %save betas for each subject
 
 end
+
+%% if amygdala analysis done, save out the exluded voxels
+if strcmp(region,'Amy')
+    save([output_directory 'amygdala_excluded_voxels.mat'], 'excluded_voxels')
 
 %% save out noise ceiling
 mean_diag_corr = mean_diag_corr_resub;
