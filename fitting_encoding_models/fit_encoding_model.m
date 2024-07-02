@@ -49,8 +49,14 @@ if strcmp(region,'Amy')
     rcell = {region};
 elseif strcmp(region,'pSTS')
     rcell = {'STSvp','STSdp'};
+elseif strcmp(region,'FFA')
+    rcell = {'FFC'};
+elseif strcmp(region,'OFA')
+    rcell={'PIT'};
+elseif strcmp(region,'V1')
+    rcell={'Ctx_V1'};
 else
-    error('Please specify region as either "Amy" or "pSTS"')
+    error('Please specify region as either "Amy" , "pSTS", "FFA", "OFA", or "V1"')
 end
 
 
@@ -64,6 +70,9 @@ if strcmp(model, 'emonet')
         video_imageFeatures = load(which('500_days_of_summer_fc7_features.mat'));
         keyword = 'emonet_intermediate';
     end
+    video_imageFeatures=video_imageFeatures.video_imageFeatures;
+    lendelta = size(video_imageFeatures, 1);
+
 elseif strcmp(model, 'emofan')
     dim = 10;
     if strcmp(layer,'late')
@@ -75,11 +84,12 @@ elseif strcmp(model, 'emofan')
         video_imageFeatures = table2array(t);
         keyword = 'emofan_intermediate';
     end
+    lendelta = size(video_imageFeatures, 1);
 elseif strcmp(model,'combined')
     dim = 20;
     if strcmp(layer,'late')
         t=readtable(which('emonet_face_output_NNDB_lastFC.txt'));
-        video_imageFeatures_fan = table2arrray(t);
+        video_imageFeatures_fan = table2array(t);
         lendelta_fan = size(video_imageFeatures_fan, 1);
         video_imageFeatures = load(which('500_days_of_summer_fc8_features.mat'));
         keyword = 'combined_late';
@@ -89,8 +99,11 @@ elseif strcmp(model,'combined')
         lendelta_fan = size(video_imageFeatures_fan, 1);
         video_imageFeatures = load(which('500_days_of_summer_fc7_features.mat'));
         keyword = 'combined_intermediate';
+
     end
-    lendelta = size(video_imageFeatures, 1);
+        video_imageFeatures=video_imageFeatures.video_imageFeatures;
+lendelta = size(video_imageFeatures, 1);
+
 else
     error('The inputs you have provided are invalid. Possible inputs for "model" are "emonet", "emofan", and "combined". Possible inputs for "layer" are "late" and "intermediate".')
 end
@@ -110,8 +123,8 @@ for s = 1:length(subjects)
 
     masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('canlab2018'),rcell));
     if strcmp(region,'Amy')
-	excluded_voxels(s,:) = masked_dat.removed_voxels
-
+	excluded_voxels(s,:) = masked_dat.removed_voxels;
+    end
     disp('masked_dat done')
 
     %UPDATED: this line resamples size of imagefeatures (video_imageFeatures) by row (182) to the size of the BOLD data (masked_dat.dat) by column (5470): resample = data resized by p/q: resample(data, p, q)
@@ -142,8 +155,8 @@ for s = 1:length(subjects)
     disp('beta done')
 
 
-    % estimate noise ceiling for resubstitution
-    yhat_resub=[ones(length(kinds),1) timematched_features]*b;
+    % estimate noise ceiling using resubstitution
+    yhat_resub=[ones(size(timematched_features,1),1) timematched_features]*b;
     disp('yhat done')
 
     pred_obs_corr_resub=corr(yhat_resub, masked_dat.dat');
@@ -179,46 +192,34 @@ for s = 1:length(subjects)
 
     mean_diag_corr = mean(diag_corr); %estimate the average correlation between observed and predicted values
 
-    save([output_directory 'sub-' subjects{s} '_' region '_' model '_' layer '_mean_diag_corr.mat'], 'mean_diag_corr', '-v7.3') %save performance measures for each subject
+    save([output_directory filesep 'sub-' subjects{s} '_' region '_' model '_' layer '_yhat.mat'], 'yhat', '-v7.3') %save predictors for each subject
 
-    save([output_directory 'beta_sub-' subjects{s} '_' region '_' model '_' layer '_mean_diag_corr.mat'], 'b', '-v7.3') %save betas for each subject
+
+    save([output_directory filesep 'sub-' subjects{s} '_' region '_' model '_' layer '_mean_diag_corr.mat'], 'mean_diag_corr', '-v7.3') %save performance measures for each subject
+
+    save([output_directory filesep 'beta_sub-' subjects{s} '_' region '_' model '_' layer '_mean_diag_corr.mat'], 'b', '-v7.3') %save betas for each subject
 
 end
 
 %% if amygdala analysis done, save out the exluded voxels
 if strcmp(region,'Amy')
-    save([output_directory 'amygdala_excluded_voxels.mat'], 'excluded_voxels')
-
+    save([output_directory filesep 'amygdala_excluded_voxels.mat'], 'excluded_voxels')
+end
 %% save out noise ceiling
 mean_diag_corr = mean_diag_corr_resub;
 
-if strcmp(region,'pSTS') && strcmp(model,'combined') && strcmp(layer,'intermediate')
-    save([output_directory 'noise_ceiling_pSTS_combined_intermed.mat'], 'mean_diag_corr')
-elseif strcmp(region,'pSTS') && strcmp(model,'emonet') && strcmp(layer,'intermediate')
-    save([output_directory 'noise_ceiling_pSTS_emonet_intermed.mat'], 'mean_diag_corr')
-elseif strcmp(region,'pSTS') && strcmp(model,'emofan') && strcmp(layer,'intermediate')
-    save([output_directory 'noise_ceiling_pSTS_emofan_intermed.mat'], 'mean_diag_corr')
+if strcmp(model,'combined') && strcmp(layer,'intermediate')
+    save([output_directory filesep 'noise_ceiling' region 'combined_intermed.mat'], 'mean_diag_corr')
+elseif  strcmp(model,'emonet') && strcmp(layer,'intermediate')
+    save([output_directory filesep 'noise_ceiling' region 'emonet_intermed.mat'], 'mean_diag_corr')
+elseif  strcmp(model,'emofan') && strcmp(layer,'intermediate')
+    save([output_directory filesep 'noise_ceiling' region 'emofan_intermed.mat'], 'mean_diag_corr')
 
-elseif strcmp(region,'pSTS') && strcmp(model,'combined') && strcmp(layer,'late')
-    save([output_directory 'noise_ceiling_pSTS_combined_late.mat'], 'mean_diag_corr')
-elseif strcmp(region,'pSTS') && strcmp(model,'emonet') && strcmp(layer,'late')
-    save([output_directory 'noise_ceiling_pSTS_emonet_late.mat'], 'mean_diag_corr')
-elseif strcmp(region,'pSTS') && strcmp(model,'emofan') && strcmp(layer,'late')
-    save([output_directory 'noise_ceiling_pSTS_emofan_late.mat'], 'mean_diag_corr')
-
-elseif strcmp(region,'Amy') && strcmp(model,'combined') && strcmp(layer,'intermediate')
-    save([output_directory 'noise_ceiling_Amy_combined_intermed.mat'], 'mean_diag_corr')
-elseif strcmp(region,'Amy') && strcmp(model,'emonet') && strcmp(layer,'intermediate')
-    save([output_directory 'noise_ceiling_Amy_emonet_intermed.mat'], 'mean_diag_corr')
-elseif strcmp(region,'Amy') && strcmp(model,'emofan') && strcmp(layer,'intermediate')
-    save([output_directory 'noise_ceiling_Amy_emofan_intermed.mat'], 'mean_diag_corr')
-
-elseif strcmp(region,'Amy') && strcmp(model,'combined') && strcmp(layer,'late')
-    save([output_directory 'noise_ceiling_Amy_combined_late.mat'], 'mean_diag_corr')
-elseif strcmp(region,'Amy') && strcmp(model,'emonet') && strcmp(layer,'late')
-    save([output_directory 'noise_ceiling_Amy_emonet_late.mat'], 'mean_diag_corr')
-elseif strcmp(region,'Amy') && strcmp(model,'emofan') && strcmp(layer,'late')
-    save([output_directory 'noise_ceiling_Amy_emofan_late.mat'], 'mean_diag_corr')
-
+elseif  strcmp(model,'combined') && strcmp(layer,'late')
+    save([output_directory filesep 'noise_ceiling' region 'combined_late.mat'], 'mean_diag_corr')
+elseif  strcmp(model,'emonet') && strcmp(layer,'late')
+    save([output_directory filesep 'noise_ceiling' region 'emonet_late.mat'], 'mean_diag_corr')
+elseif  strcmp(model,'emofan') && strcmp(layer,'late')
+    save([output_directory filesep 'noise_ceiling' region 'emofan_late.mat'], 'mean_diag_corr')
 
 end

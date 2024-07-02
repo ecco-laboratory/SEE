@@ -122,7 +122,7 @@ actsFromPenultFC.remove()
 actsFromLastFC.remove()
                          
 
-np.savetxt('emonet_face_output_NNDB_expression.txt', expr)
-np.savetxt('emonet_face_output_NNDB_lastConv.txt', lastConv_list)
-np.savetxt('emonet_face_output_NNDB_penultFC.txt', penultFC_list)
-np.savetxt('emonet_face_output_NNDB_lastFC.txt', lastFC_list)
+#np.savetxt('emonet_face_output_NNDB_expression.txt', expr)
+#np.savetxt('emonet_face_output_NNDB_lastConv.txt', lastConv_list)
+#np.savetxt('emonet_face_output_NNDB_penultFC.txt', penultFC_list)
+np.savetxt('emofan_late_redo51724_lastFC.txt', lastFC_list)

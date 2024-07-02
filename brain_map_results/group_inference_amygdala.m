@@ -1,5 +1,5 @@
-addpath(genpath('~/Github'))
-
+addpath(genpath('/home/data/eccolab/Code/GitHub'))
+addpath('/home/data/eccolab/Code/NNDb/SEE/outputs/')
 %%load in data for all subjects in amygdala
 
 % performance_amygdala_EmoNet = zeros(20,20,252); %subject,categories,voxels
@@ -53,8 +53,8 @@ tmap_perf_multi_diff=st.tstat;
 
 
 %%
-load('amygdala_multimodal_ttest_stat_image.mat')
-masked_dat = stat_image;
+dat = fmri_data('/home/data/eccolab/OpenNeuro/ds002837/derivatives/sub-1/func/sub-1_task-500daysofsummer_bold_blur_censor.nii.gz');
+masked_dat = apply_mask(dat,select_atlas_subset(load_atlas('canlab2018'),{'Amy'}));
 
 %% tmap on model performance
 
@@ -63,7 +63,7 @@ pmaps =[p_EmoFAN' p_EmoNet' p_multi' p_EmoNet_diff' p_multi_diff'];
 names = {'EmoFAN' 'EmoNet' 'Multi' 'EmoNet_vs_EmoFAN' 'Multi_vs_Single'};
 
 
-for i=1:size(tmaps,2)
+for i=5:size(tmaps,2)
 stat_image = statistic_image;
 stat_image.volInfo = masked_dat.volInfo;
 stat_image.p = pmaps(:,i);          
@@ -71,7 +71,7 @@ stat_image.dat = tmaps(:,i);
 stat_image.dat(~(pmaps(:,i)<FDR(pmaps(:,i),.05)))=nan;
 stat_image.removed_voxels = masked_dat.removed_voxels;
 stat_image.removed_images = 0;
-stat_image.fullpath = ['amygdala_performance_' names{i} '_FDR05.nii'];
+stat_image.fullpath = ['/home/data/eccolab/Code/NNDb/SEE/outputs/performance_maps/amygdala_performance_' names{i} '_FDR05.nii'];
 stat_image.write;
 end
 

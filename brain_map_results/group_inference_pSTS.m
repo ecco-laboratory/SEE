@@ -1,5 +1,6 @@
 %% load in data for all subjects in pSTS
 addpath(genpath('/home/data/eccolab/Code/GitHub/'))
+addpath('/home/data/eccolab/Code/NNDb/SEE/outputs/')
 for s=1:20;
 
 
@@ -59,8 +60,18 @@ stat_image.dat = tmaps(:,i);
 stat_image.dat(~(pmaps(:,i)<FDR(pmaps(:,i),.05)))=nan;
 stat_image.removed_voxels = masked_dat.removed_voxels;
 stat_image.removed_images = 0;
-stat_image.fullpath = ['pSTS_performance_' names{i} '_FDR05.nii'];
+stat_image.fullpath = ['/home/data/eccolab/Code/NNDb/SEE/outputs/performance_maps/pSTS_performance_' names{i} '_FDR05.nii'];
 stat_image.write;
 end
 
 
+%% load statistic images and get peak effects
+stat_obj_emofan = fmri_data('/home/data/eccolab/Code/NNDb/SEE/outputs/performance_maps/pSTS_performance_EmoFAN_FDR05.nii');
+emofan_table = table(region(stat_obj_emofan))
+%%
+stat_obj_emonet = fmri_data('/home/data/eccolab/Code/NNDb/SEE/outputs/performance_maps/pSTS_performance_EmoNet_FDR05.nii');
+emonet_table = table(region(stat_obj_emonet))
+
+%%
+stat_obj_multi_vs_single = fmri_data('/home/data/eccolab/Code/NNDb/SEE/outputs/performance_maps/pSTS_performance_Multi_vs_Single_FDR05.nii');
+multi_vs_single_table = table(region(stat_obj_multi_vs_single))

@@ -1,2 +1,11 @@
 *.mat
+*.png
 demo_test.m
+comparing_encoding_models/compare_encoding_performance_supplementary_dim50.m
+comparing_encoding_models/updated_model_comparisons_V1_KS.m
+feature_extraction/supplementary/emofan_intermediate_GoT.txt
+feature_extraction/supplementary/emofan_late_GoT.txt
+feature_extraction/supplementary/GameofThronesv1.mov
+feature_extraction/supplementary/GoT_frames/
+outputs/
+supplementary_analyses/
